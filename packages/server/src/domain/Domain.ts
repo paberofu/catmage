@@ -24,14 +24,32 @@ export class Domain<T> {
     }
   }
 
-  create() {}
-  remove() {}
+  create = (initialValue: T): DomainEntry<T> => {
+    const id = crypto.randomUUID()
+    const entry = new DomainEntry({
+      id,
+      initialValue,
+      notify: () => {},
+      remove: this.remove
+    })
 
-  byId(id: string): DomainEntry<T> | undefined {
+    this._entries.byId[id] = entry
+    this._entries.ids.push(id)
+
+    return entry
+  }
+
+  remove = (id: string) => {
+    delete this._entries.byId[id]
+    this._entries.ids.splice(this._entries.ids.indexOf(id), 1)
+  }
+
+  byId = (id: string): DomainEntry<T> | undefined => {
     return this._entries.byId[id]
   }
 
-  find() {}
-  
-  forEach() {}
+  // TODO
+  find = () => {}
+  // TODO
+  forEach = () => {}
 }

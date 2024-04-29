@@ -1,0 +1,1 @@
+export type EventMap<T extends string, U> = Record<T, U>
